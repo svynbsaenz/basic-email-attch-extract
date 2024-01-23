@@ -1,3 +1,4 @@
+import datetime
 import imaplib
 import email
 from email.header import decode_header
@@ -41,8 +42,11 @@ def process_emails(mail, senders, save_directory):
     # Select the inbox
     mail.select("inbox")
 
+    today = datetime.datetime.today()
+    date_since = today.strftime('%d-%b-%Y')
+
     # Search for all unread emails
-    result, data = mail.search(None, "UNSEEN")
+    result, data = mail.search(None, f'UNSEEN SINCE "{date_since}"')
     email_ids = data[0].split()
 
     for email_id in email_ids:
